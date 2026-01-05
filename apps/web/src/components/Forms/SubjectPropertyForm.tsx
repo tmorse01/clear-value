@@ -154,7 +154,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
         </Box>
       )}
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             fullWidth
             label="Address"
@@ -174,7 +174,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             fullWidth
             label="Bedrooms"
@@ -189,7 +189,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             fullWidth
             label="Bathrooms"
@@ -204,7 +204,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             fullWidth
             label="Gross Living Area (sqft)"
@@ -219,7 +219,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             fullWidth
             label="Lot Size (acres)"
@@ -234,7 +234,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             fullWidth
             label="Year Built"
@@ -249,7 +249,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             fullWidth
             select
@@ -264,7 +264,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
           </TextField>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             fullWidth
             select
@@ -281,7 +281,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
           </TextField>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             fullWidth
             label="Notes (Optional)"
@@ -294,12 +294,12 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
         </Grid>
 
         {validationError && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <ErrorAlert error={validationError} />
           </Grid>
         )}
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Button
             type="submit"
             variant="contained"
@@ -312,7 +312,7 @@ export function SubjectPropertyForm({ isExampleData = false }: SubjectPropertyFo
         </Grid>
 
         {state.subject && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography variant="body2" color="success.main">
               ✓ Subject property saved
             </Typography>

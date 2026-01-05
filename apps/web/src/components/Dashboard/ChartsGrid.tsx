@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { PriceVsGlaChart } from "../Charts/PriceVsGlaChart";
 import { PriceDistributionChart } from "../Charts/PriceDistributionChart";
 import { SalePriceTrendChart } from "../Charts/SalePriceTrendChart";
@@ -18,4 +18,3 @@ export function ChartsGrid() {
     </Grid>
   );
 }
-

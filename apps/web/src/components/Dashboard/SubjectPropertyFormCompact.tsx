@@ -96,7 +96,7 @@ export function SubjectPropertyFormCompact() {
   return (
     <Box>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             fullWidth
             size="small"
@@ -111,7 +111,7 @@ export function SubjectPropertyFormCompact() {
 
         {manualCoords && (
           <>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <TextField
                 fullWidth
                 size="small"
@@ -121,7 +121,7 @@ export function SubjectPropertyFormCompact() {
                 onChange={(e) => setLatitude(e.target.value ? Number(e.target.value) : "")}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <TextField
                 fullWidth
                 size="small"
@@ -134,7 +134,7 @@ export function SubjectPropertyFormCompact() {
           </>
         )}
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormControlLabel
             control={
               <Checkbox
@@ -147,7 +147,7 @@ export function SubjectPropertyFormCompact() {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Button
             variant="outlined"
             startIcon={<Map />}
@@ -159,7 +159,7 @@ export function SubjectPropertyFormCompact() {
           </Button>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             fullWidth
             size="small"
@@ -174,7 +174,7 @@ export function SubjectPropertyFormCompact() {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid size={6}>
           <TextField
             fullWidth
             size="small"
@@ -188,7 +188,7 @@ export function SubjectPropertyFormCompact() {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid size={6}>
           <TextField
             fullWidth
             size="small"
@@ -202,7 +202,7 @@ export function SubjectPropertyFormCompact() {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             fullWidth
             size="small"
@@ -217,12 +217,12 @@ export function SubjectPropertyFormCompact() {
         </Grid>
 
         {state.error && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <ErrorAlert error={state.error} />
           </Grid>
         )}
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Button
             variant="contained"
             onClick={handleSave}
@@ -235,7 +235,7 @@ export function SubjectPropertyFormCompact() {
         </Grid>
 
         {state.subject && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography variant="caption" color="success.main">
               ✓ Subject property saved
             </Typography>

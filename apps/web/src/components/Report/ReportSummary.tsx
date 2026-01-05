@@ -25,7 +25,7 @@ export function ReportSummary() {
     <Box>
       <Grid container spacing={3}>
         {/* Subject Property Card */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
@@ -36,7 +36,7 @@ export function ReportSummary() {
                 {formatAddress(subject.address)}
               </Typography>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <Typography variant="caption" color="text.secondary">
                     Beds / Baths
                   </Typography>
@@ -44,7 +44,7 @@ export function ReportSummary() {
                     {subject.beds} / {subject.baths}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <Typography variant="caption" color="text.secondary">
                     GLA
                   </Typography>
@@ -52,7 +52,7 @@ export function ReportSummary() {
                     {formatSquareFeet(subject.gla)}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <Typography variant="caption" color="text.secondary">
                     Lot Size
                   </Typography>
@@ -60,7 +60,7 @@ export function ReportSummary() {
                     {formatLotSize(subject.lotSize)}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <Typography variant="caption" color="text.secondary">
                     Year Built
                   </Typography>
@@ -74,7 +74,7 @@ export function ReportSummary() {
         </Grid>
 
         {/* Valuation Card */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
@@ -105,7 +105,7 @@ export function ReportSummary() {
 
         {/* Warnings */}
         {(hasOutliers || insufficientComps) && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Alert severity="warning">
               <Typography variant="subtitle2" sx={{ mb: 1 }}>
                 Warnings:
@@ -133,7 +133,7 @@ export function ReportSummary() {
         )}
 
         {/* Model Info */}
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Card>
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
@@ -141,7 +141,7 @@ export function ReportSummary() {
                 <Typography variant="h6">Model Information</Typography>
               </Box>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Typography variant="caption" color="text.secondary">
                     Model Type
                   </Typography>
@@ -151,7 +151,7 @@ export function ReportSummary() {
                       : "Ridge Regression"}
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Typography variant="caption" color="text.secondary">
                     R²
                   </Typography>
@@ -159,7 +159,7 @@ export function ReportSummary() {
                     {(report.regression.metrics.rSquared * 100).toFixed(1)}%
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Typography variant="caption" color="text.secondary">
                     Adjusted R²
                   </Typography>
@@ -167,7 +167,7 @@ export function ReportSummary() {
                     {(report.regression.metrics.adjustedRSquared * 100).toFixed(1)}%
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Typography variant="caption" color="text.secondary">
                     Standard Error
                   </Typography>

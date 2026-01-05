@@ -1,4 +1,4 @@
-import { Component, ReactNode } from "react";
+import { Component, type ReactNode } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { ErrorAlert } from "./UI/ErrorAlert";
 
@@ -50,4 +50,3 @@ export class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
-

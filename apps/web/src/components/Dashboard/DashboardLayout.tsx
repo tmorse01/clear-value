@@ -31,13 +31,13 @@ export function DashboardLayout() {
       <Box>
         {viewMode === "overview" && (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <PriceVsGlaChart />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <PriceDistributionChart />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <SalePriceTrendChart />
             </Grid>
           </Grid>
@@ -58,4 +58,3 @@ export function DashboardLayout() {
     </Box>
   );
 }
-

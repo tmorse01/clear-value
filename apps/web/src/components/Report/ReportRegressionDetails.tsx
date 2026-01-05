@@ -22,7 +22,7 @@ export function ReportRegressionDetails() {
 
         <Grid container spacing={3}>
           {/* Model Metrics */}
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box sx={{ mb: 3 }}>
               <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600 }}>
                 Model Performance
@@ -85,7 +85,7 @@ export function ReportRegressionDetails() {
           </Grid>
 
           {/* Coefficient Explanations */}
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box sx={{ mb: 3 }}>
               <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600 }}>
                 Interpretation

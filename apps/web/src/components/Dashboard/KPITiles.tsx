@@ -38,7 +38,7 @@ export function KPITiles() {
   return (
     <Grid container spacing={3} sx={{ mb: 3 }}>
       {/* Estimated Value */}
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <Card sx={{ height: "100%" }}>
           <CardContent>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
@@ -58,7 +58,7 @@ export function KPITiles() {
       </Grid>
 
       {/* Median Price per Sqft */}
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <Card sx={{ height: "100%" }}>
           <CardContent>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
@@ -78,7 +78,7 @@ export function KPITiles() {
       </Grid>
 
       {/* Comp Count */}
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <Card sx={{ height: "100%" }}>
           <CardContent>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
@@ -98,7 +98,7 @@ export function KPITiles() {
       </Grid>
 
       {/* Confidence Score */}
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <Card sx={{ height: "100%" }}>
           <CardContent>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
