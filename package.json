@@ -2,6 +2,9 @@
   "name": "compclear",
   "private": true,
   "packageManager": "pnpm@8.0.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
