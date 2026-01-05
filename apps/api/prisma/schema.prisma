@@ -1,0 +1,48 @@
+// Prisma schema for CompClear database
+// Database: PostgreSQL (Railway)
+// Prisma 7.2.0 - Connection URL is configured in prisma.config.ts
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User model for post-MVP authentication (Auth0 integration)
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  auth0Id           String?   @unique // For Auth0 integration
+  subscriptionTier  String    @default("free") // free | pro | enterprise
+  reportsGenerated  Int       @default(0)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  reports           Report[]
+  
+  @@index([email])
+  @@index([auth0Id])
+}
+
+// Report model for storing generated reports
+// MVP: userId is nullable for stateless operation
+// Post-MVP: Link reports to users for persistence
+model Report {
+  id          String   @id @default(uuid())
+  userId      String?  // Nullable for MVP (stateless)
+  name        String?  // User-provided name
+  reportId    String   @unique // From Report.reportId (client-generated)
+  reportData  Json     // Full Report JSON structure
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([createdAt])
+  @@index([reportId])
+}
+

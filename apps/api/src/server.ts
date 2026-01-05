@@ -55,8 +55,9 @@ export async function buildServer(options: ServerOptions = {}): Promise<FastifyI
   await server.register(v1Router, { prefix: '/api/v1' });
 
   // Global error handler
-  server.setErrorHandler((error, request, reply) => {
-    logError(server.log, error, {
+  server.setErrorHandler((error: unknown, request, reply) => {
+    const err = error instanceof Error ? error : new Error(String(error));
+    logError(server.log, err, {
       method: request.method,
       url: request.url,
       requestId: request.id,
@@ -64,26 +65,28 @@ export async function buildServer(options: ServerOptions = {}): Promise<FastifyI
     const nodeEnv = getConfig().nodeEnv;
 
     // Validation errors
-    if (error.validation) {
+    if (error && typeof error === 'object' && 'validation' in error && error.validation) {
       return reply.status(400).send({
         error: 'Validation Error',
-        message: error.message,
+        message: err.message,
         details: error.validation,
         code: 'VALIDATION_ERROR',
       });
     }
 
     // Default error response
-    const statusCode = error.statusCode || 500;
+    const statusCode = (error && typeof error === 'object' && 'statusCode' in error && typeof error.statusCode === 'number') 
+      ? error.statusCode 
+      : 500;
     const message = nodeEnv === 'production' 
       ? 'Internal Server Error' 
-      : error.message;
+      : err.message;
 
     reply.status(statusCode).send({
-      error: error.name || 'Internal Server Error',
+      error: err.name || 'Internal Server Error',
       message,
-      code: error.code || 'INTERNAL_ERROR',
-      ...(nodeEnv === 'development' && { stack: error.stack }),
+      code: (error && typeof error === 'object' && 'code' in error && typeof error.code === 'string') ? error.code : 'INTERNAL_ERROR',
+      ...(nodeEnv === 'development' && { stack: err.stack }),
     });
   });
 

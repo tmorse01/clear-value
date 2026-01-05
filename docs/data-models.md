@@ -1,31 +1,40 @@
 # Data Models
 
+> **Note**: This documentation should be kept in sync with `packages/shared/src/types`. 
+> The TypeScript types are the source of truth. When updating types, please update this document.
+
 ## TypeScript Interfaces
+
+### Property Features (Base Interface)
+
+```typescript
+interface PropertyFeatures {
+  gla: number; // Gross Living Area (sqft)
+  beds: number;
+  baths: number;
+  lotSize: number; // Acres
+  age: number; // Calculated from yearBuilt
+  distance?: number; // Distance from subject (miles)
+  [key: string]: unknown;
+}
+```
+
+### Subject Property
 
 ### Subject Property
 
 ```typescript
-interface SubjectProperty {
-  // Required
+interface SubjectProperty extends PropertyFeatures {
   address: string;
-  beds: number;
-  baths: number;
-  gla: number; // Gross Living Area (sqft)
-  lotSize: number; // Acres
   yearBuilt: number;
-  propertyType: PropertyType;
-
-  // Optional
+  propertyType?: PropertyType;
   condition?: PropertyCondition;
   finishLevel?: FinishLevel;
   notes?: string;
-
-  // Calculated (after geocoding)
   coordinates?: {
     latitude: number;
     longitude: number;
   };
-  age?: number; // Calculated from yearBuilt
 }
 
 enum PropertyType {
@@ -54,28 +63,15 @@ enum FinishLevel {
 ### Comparable Property
 
 ```typescript
-interface ComparableProperty {
-  // Required
+interface ComparableProperty extends PropertyFeatures {
   address: string;
   salePrice: number;
   saleDate: string; // ISO 8601 date
-  gla: number;
-  beds: number;
-  baths: number;
   yearBuilt: number;
-
-  // Optional
-  lotSize?: number;
   propertyType?: PropertyType;
   condition?: PropertyCondition;
-
-  // Calculated
-  coordinates?: {
-    latitude: number;
-    longitude: number;
-  };
-  distance?: number; // Miles from subject
-  age?: number;
+  latitude?: number;
+  longitude?: number;
   daysSinceSale?: number; // For time adjustment
 }
 ```
@@ -86,9 +82,9 @@ interface ComparableProperty {
 interface RegressionConfig {
   modelType: ModelType;
   includeTimeAdjustment: boolean;
-  includeDistanceAdjustment: boolean;
-  minComps: number; // Default: 3
-  maxComps: number; // Default: 15
+  includeDistanceAdjustment?: boolean;
+  minComps: number;
+  maxComps: number;
   outlierThreshold?: number; // Standard deviations
   regularization?: number; // For ridge regression
 }
@@ -137,13 +133,29 @@ interface PropertyAdjustments {
   total: number;
 }
 
-interface AdjustedComparable {
+interface ReportComp {
   original: ComparableProperty;
+  distance: number;
+  similarityScore: number; // 0-1, higher = more similar
   adjustments: PropertyAdjustments;
   adjustedPrice: number;
   residual: number; // Difference from predicted
-  similarityScore: number; // 0-1, higher = more similar
   isOutlier?: boolean;
+}
+```
+
+### Regression Result
+
+```typescript
+interface RegressionResult {
+  modelType: string;
+  coefficients: RegressionCoefficients;
+  metrics: RegressionMetrics;
+  adjustedPrices: number[];
+  residuals: number[];
+  confidenceGrade: ConfidenceGrade;
+  confidenceScore: number;
+  outliers: number[]; // Indices of outlier comps
 }
 ```
 
@@ -158,7 +170,7 @@ interface ValuationResult {
   };
   confidenceGrade: ConfidenceGrade;
   confidenceScore: number; // 0-1
-  methodology: string;
+  methodology?: string;
 }
 
 enum ConfidenceGrade {
@@ -176,14 +188,10 @@ interface Report {
   reportId: string;
   subject: SubjectProperty;
   comps: ComparableProperty[];
-  adjustedComps: AdjustedComparable[];
-  regression: {
-    coefficients: RegressionCoefficients;
-    metrics: RegressionMetrics;
-    config: RegressionConfig;
-  };
+  adjustedComps: ReportComp[];
+  regression: RegressionResult;
   valuation: ValuationResult;
-  outliers: string[]; // Comp addresses marked as outliers
+  outliers: number[]; // Indices of outlier comps
   charts: ChartData;
   metadata: ReportMetadata;
 }
@@ -216,7 +224,7 @@ interface ReportMetadata {
   generatedAt: string; // ISO 8601 timestamp
   compCount: number;
   modelVersion: string;
-  processingTimeMs: number;
+  processingTimeMs?: number;
 }
 ```
 
@@ -253,6 +261,26 @@ interface CSVRow {
   longitude?: number;
   Lat?: number;
   Lng?: number;
+}
+```
+
+### Parser Types
+
+```typescript
+// Parsed comparable property from CSV
+// This is the normalized format after parsing various CSV formats
+type ParsedComp = Omit<
+  ComparableProperty,
+  "age" | "distance" | "daysSinceSale"
+> & {
+  [key: string]: unknown; // Allow additional fields from CSV
+};
+
+interface ParseResult {
+  success: boolean;
+  comps: ParsedComp[];
+  errors: string[];
+  warnings: string[];
 }
 ```
 
@@ -315,17 +343,40 @@ function calculateSimilarity(
 }
 ```
 
-## Storage (Future)
+## Database Schema (Prisma)
 
-### User
+The database uses PostgreSQL with Prisma ORM. The schema is defined in `apps/api/prisma/schema.prisma`.
+
+### User Model
+
+```prisma
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  auth0Id           String?   @unique // For Auth0 integration
+  subscriptionTier  String    @default("free") // free | pro | enterprise
+  reportsGenerated  Int       @default(0)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  reports           Report[]
+  
+  @@index([email])
+  @@index([auth0Id])
+}
+```
+
+**TypeScript Interface:**
 
 ```typescript
 interface User {
   id: string;
   email: string;
+  auth0Id?: string;
   subscriptionTier: SubscriptionTier;
   reportsGenerated: number;
-  createdAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 enum SubscriptionTier {
@@ -335,15 +386,72 @@ enum SubscriptionTier {
 }
 ```
 
-### Saved Report
+### Report Model
+
+```prisma
+model Report {
+  id          String   @id @default(uuid())
+  userId      String?  // Nullable for MVP (stateless)
+  name        String?  // User-provided name
+  reportId    String   @unique // From Report.reportId (client-generated)
+  reportData  Json     // Full Report JSON structure
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([createdAt])
+  @@index([reportId])
+}
+```
+
+**TypeScript Interface:**
 
 ```typescript
 interface SavedReport {
   id: string;
-  userId: string;
-  report: Report;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
+  userId?: string; // Nullable for MVP stateless mode
+  name?: string;
+  reportId: string;
+  reportData: Report; // Full Report JSON structure
+  createdAt: Date;
+  updatedAt: Date;
 }
 ```
+
+### Future Models
+
+- **Templates**: Report templates for customization
+- **User Preferences**: User-specific settings and preferences
+- **Analytics**: Usage tracking and model performance metrics
+
+### Database Migration
+
+The project uses **Prisma 7.2.0** with a new configuration format. Connection URLs are configured in `prisma.config.ts` instead of the schema file.
+
+Prisma migrations are used to manage schema changes:
+
+```bash
+# Generate Prisma Client
+pnpm --filter api db:generate
+
+# Create and apply migration
+pnpm --filter api db:migrate
+
+# Deploy migrations (production)
+pnpm --filter api db:migrate:deploy
+
+# Open Prisma Studio (database GUI)
+pnpm --filter api db:studio
+```
+
+**Prisma 7.2.0 Configuration:**
+
+- **Schema**: `apps/api/prisma/schema.prisma` - Database models (no `url` in datasource)
+- **Config**: `apps/api/prisma.config.ts` - Connection URL and migration settings
+- **Client**: `apps/api/src/lib/prisma.ts` - Prisma Client instance with `PrismaPg` adapter
+
+**Note**: During MVP phase, the database is optional (stateless mode). The schema is ready for post-MVP when user authentication and report persistence are enabled.
+
+**Reference**: [Prisma 7 PostgreSQL Quickstart](https://www.prisma.io/docs/getting-started/prisma-orm/quickstart/postgresql)
