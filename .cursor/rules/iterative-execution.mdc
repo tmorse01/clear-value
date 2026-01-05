@@ -1,0 +1,53 @@
+---
+description: Iterative task execution workflow - must be followed for all tasks
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Iterative Task Execution Workflow
+
+**This rule MUST be followed for every task.**
+
+## Required Process
+
+Before starting any task, read `docs/iterative-task-execution.md` completely. This document provides the complete 8-phase workflow.
+
+## Key Requirements
+
+1. **Never assume code works** - Always validate after every change
+2. **Iterative development** - Make small changes, validate each one
+3. **Test incrementally** - Test each piece as you build it
+4. **Fix errors immediately** - Don't accumulate errors
+
+## Validation After Every Change
+
+After making ANY code change, you MUST:
+
+```bash
+# Type check
+pnpm typecheck
+
+# Lint check
+pnpm lint
+
+# Build affected package
+pnpm --filter <package-name> build
+
+# Test manually (start dev server, test in browser/API)
+```
+
+## Completion Criteria
+
+A task is NOT complete until ALL of these are true:
+
+- [ ] All code compiles without errors
+- [ ] All linting passes
+- [ ] All type checking passes
+- [ ] Code has been manually tested
+- [ ] All acceptance criteria are met
+- [ ] No regressions introduced
+- [ ] Build succeeds in production mode
+
+## Reference
+
+See `docs/iterative-task-execution.md` for the complete detailed workflow with all phases, checklists, and validation steps.

@@ -37,24 +37,30 @@ export interface ComparableProperty extends PropertyFeatures {
   daysSinceSale?: number; // For time adjustment
 }
 
-export enum PropertyType {
-  SINGLE_FAMILY = "single_family",
-  CONDOMINIUM = "condominium",
-  TOWNHOUSE = "townhouse",
-  MULTI_FAMILY = "multi_family",
-}
+export const PropertyType = {
+  SINGLE_FAMILY: "single_family",
+  CONDOMINIUM: "condominium",
+  TOWNHOUSE: "townhouse",
+  MULTI_FAMILY: "multi_family",
+} as const;
 
-export enum PropertyCondition {
-  NEW_CONSTRUCTION = "new_construction",
-  EXCELLENT = "excellent",
-  GOOD = "good",
-  FAIR = "fair",
-  POOR = "poor",
-}
+export type PropertyType = (typeof PropertyType)[keyof typeof PropertyType];
 
-export enum FinishLevel {
-  LUXURY = "luxury",
-  HIGH = "high",
-  STANDARD = "standard",
-  BASIC = "basic",
-}
+export const PropertyCondition = {
+  NEW_CONSTRUCTION: "new_construction",
+  EXCELLENT: "excellent",
+  GOOD: "good",
+  FAIR: "fair",
+  POOR: "poor",
+} as const;
+
+export type PropertyCondition = (typeof PropertyCondition)[keyof typeof PropertyCondition];
+
+export const FinishLevel = {
+  LUXURY: "luxury",
+  HIGH: "high",
+  STANDARD: "standard",
+  BASIC: "basic",
+} as const;
+
+export type FinishLevel = (typeof FinishLevel)[keyof typeof FinishLevel];

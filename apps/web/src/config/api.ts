@@ -12,6 +12,9 @@ export const apiConfig = {
 // API endpoints
 export const endpoints = {
   health: "/health",
-  // Add more endpoints as they are implemented
+  parseCSV: "/api/v1/parser/csv",
+  validateSubject: "/api/v1/subject/validate",
+  generateReport: "/api/v1/report/generate",
+  exportPDF: "/api/v1/report/export-pdf",
 } as const;
 

@@ -8,7 +8,7 @@
  * - Handle multi-page layout
  */
 
-import type { Report } from "shared";
+import type { Report } from "@clearvalue/shared";
 
 /**
  * Generate PDF from report data

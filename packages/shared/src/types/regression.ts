@@ -14,10 +14,12 @@ export interface RegressionConfig {
   regularization?: number; // For ridge regression
 }
 
-export enum ModelType {
-  LINEAR = "linear",
-  RIDGE = "ridge",
-}
+export const ModelType = {
+  LINEAR: "linear",
+  RIDGE: "ridge",
+} as const;
+
+export type ModelType = (typeof ModelType)[keyof typeof ModelType];
 
 export interface RegressionCoefficients {
   intercept: number;
@@ -61,12 +63,14 @@ export interface ValuationResult {
   methodology?: string;
 }
 
-export enum ConfidenceGrade {
-  A = "A", // 0.85-1.0
-  B = "B", // 0.70-0.84
-  C = "C", // 0.55-0.69
-  D = "D", // < 0.55
-}
+export const ConfidenceGrade = {
+  A: "A", // 0.85-1.0
+  B: "B", // 0.70-0.84
+  C: "C", // 0.55-0.69
+  D: "D", // < 0.55
+} as const;
+
+export type ConfidenceGrade = (typeof ConfidenceGrade)[keyof typeof ConfidenceGrade];
 
 // Re-export for convenience
 export type { SubjectProperty, ComparableProperty };

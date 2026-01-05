@@ -5,9 +5,17 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "types": ["node"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@clearvalue/shared": ["../../packages/shared/src/index.ts"]
+    }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "generated"]
+  "include": ["src/**/*", "generated/**/*"],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    { "path": "../../packages/shared" }
+  ]
 }
 

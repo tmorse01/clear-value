@@ -1,37 +1,25 @@
-import { Box, Typography } from "@mui/material";
-import { Container } from "./components/Layout";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ReportProvider } from "./contexts/ReportContext";
+import { PageLayout } from "./components/Layout/PageLayout";
+import { HomePage } from "./pages/HomePage";
+import { CreateReportPage } from "./pages/CreateReportPage";
+import { ReportPage } from "./pages/ReportPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 function App() {
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        backgroundColor: "background.default",
-      }}
-    >
-      <Container>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: "80vh",
-            gap: 3,
-          }}
-        >
-          <Typography variant="h1" component="h1" color="primary">
-            CompClear
-          </Typography>
-          <Typography variant="h5" color="text.secondary">
-            Real Estate Valuation Platform
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Frontend setup complete. Ready for development.
-          </Typography>
-        </Box>
-      </Container>
-    </Box>
+    <BrowserRouter>
+      <ReportProvider>
+        <PageLayout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/create" element={<CreateReportPage />} />
+            <Route path="/report/:reportId?" element={<ReportPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </PageLayout>
+      </ReportProvider>
+    </BrowserRouter>
   );
 }
 

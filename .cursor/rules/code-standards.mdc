@@ -1,0 +1,57 @@
+---
+description: Code style and standards for the project
+globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+alwaysApply: true
+---
+
+# Code Standards
+
+## TypeScript
+
+- Use strict mode (already enabled)
+- Use shared types from `@clearvalue/shared`
+- Prefer interfaces over types for public APIs
+- Never use `any` type unless absolutely necessary
+- Always define return types for functions
+
+## Naming Conventions
+
+- **Variables**: camelCase (`userName`, `reportData`)
+- **Types/Interfaces**: PascalCase (`User`, `ReportData`)
+- **Constants**: UPPER_SNAKE_CASE (`MAX_RETRIES`, `API_BASE_URL`)
+- **Files**: camelCase for utilities, PascalCase for components (`userService.ts`, `UserProfile.tsx`)
+
+## Error Handling
+
+- Always handle errors gracefully
+- Return structured error responses (for API)
+- Include error codes and helpful messages
+- Log errors for debugging
+- Never throw unhandled errors
+
+## Validation
+
+- Use Zod schemas for all inputs
+- Validate at API boundaries
+- Validate user inputs in forms
+- Provide clear validation error messages
+
+## Comments
+
+- Document complex algorithms
+- Explain business logic decisions
+- Add JSDoc comments for public APIs
+- Don't comment obvious code
+
+## Code Organization
+
+- Keep functions small and focused
+- Extract reusable logic into utilities
+- Use service layer for business logic
+- Keep route handlers thin (for API)
+
+## Dependencies
+
+- Check if dependency already exists
+- Use workspace dependencies for internal packages
+- Document significant new dependencies
