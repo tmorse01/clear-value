@@ -6,6 +6,9 @@ import {
   Grid,
   Card,
   CardContent,
+  Stepper,
+  Step,
+  StepLabel,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {
@@ -18,6 +21,10 @@ import {
 } from "@mui/icons-material";
 import { InteractivePreview } from "../components/Landing/InteractivePreview";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import {
+  CustomStepConnector,
+  CustomStepIcon,
+} from "../components/Landing/CustomStepper";
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -336,73 +343,57 @@ export function HomePage() {
           >
             How It Works
           </Typography>
-          <Grid container spacing={{ xs: 4, md: 6 }}>
-            {steps.map((step, index) => (
-              <Grid size={{ xs: 12, md: 4 }} key={index}>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    position: "relative",
-                    "&::after": {
-                      content: '""',
-                      position: "absolute",
-                      top: "32px",
-                      right: { xs: "50%", md: "-50%" },
-                      transform: {
-                        xs: "translateX(50%)",
-                        md:
-                          index === steps.length - 1 ? "none" : "translateX(0)",
-                      },
-                      width: { xs: 0, md: "100%" },
-                      height: 2,
-                      backgroundColor: "primary.light",
-                      opacity: index === steps.length - 1 ? 0 : 0.3,
-                      display: { xs: "none", md: "block" },
-                    },
-                  }}
-                >
-                  <Box
+          <Box sx={{ maxWidth: 1000, mx: "auto", px: { xs: 2, md: 0 } }}>
+            <Stepper
+              activeStep={steps.length}
+              alternativeLabel
+              connector={<CustomStepConnector />}
+              sx={{
+                mb: { xs: 4, md: 6 },
+                "& .MuiStepConnector-root": {
+                  top: 24,
+                  left: "calc(-50% + 24px)",
+                  right: "calc(50% + 24px)",
+                },
+              }}
+            >
+              {steps.map((step) => (
+                <Step key={step.number} completed>
+                  <StepLabel
+                    StepIconComponent={CustomStepIcon}
                     sx={{
-                      width: { xs: 72, md: 80 },
-                      height: { xs: 72, md: 80 },
-                      borderRadius: "50%",
-                      background:
-                        "linear-gradient(135deg, #2196f3 0%, #1976d2 100%)",
-                      color: "white",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: { xs: "1.75rem", md: "2rem" },
-                      fontWeight: 700,
-                      mx: "auto",
-                      mb: 3,
-                      boxShadow: "0 4px 14px rgba(33, 150, 243, 0.3)",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        transform: "scale(1.1)",
-                        boxShadow: "0 6px 20px rgba(33, 150, 243, 0.4)",
+                      "& .MuiStepLabel-label": {
+                        fontSize: { xs: "1.1rem", md: "1.25rem" },
+                        fontWeight: 700,
+                        color: "text.primary",
+                        mt: 1,
                       },
                     }}
                   >
-                    {step.number}
-                  </Box>
-                  <Typography
-                    variant="h5"
-                    sx={{ mb: 2, fontWeight: 700, fontSize: "1.5rem" }}
-                  >
                     {step.title}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    color="text.secondary"
-                    sx={{ lineHeight: 1.7, maxWidth: 300, mx: "auto" }}
-                  >
-                    {step.description}
-                  </Typography>
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <Grid container spacing={{ xs: 3, md: 4 }} sx={{ mt: 2 }}>
+              {steps.map((step) => (
+                <Grid size={{ xs: 12, md: 4 }} key={step.number}>
+                  <Box sx={{ textAlign: "center", px: { xs: 2, md: 3 } }}>
+                    <Typography
+                      variant="body1"
+                      color="text.secondary"
+                      sx={{
+                        lineHeight: 1.7,
+                        fontSize: { xs: "0.9375rem", md: "1rem" },
+                      }}
+                    >
+                      {step.description}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </Box>
 
         {/* CTA Section */}
