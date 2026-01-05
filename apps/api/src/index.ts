@@ -1,7 +1,10 @@
-import { healthRouter } from "./routes/health.js";
+import { startServer } from './server.js';
+import { getConfig } from './config/env.js';
 
-// API server entry point
-console.log("API server starting...");
+const config = getConfig();
 
-// Export routes for use in server setup
-export { healthRouter };
+// Start the server
+startServer({ port: config.port, host: config.host }).catch((error) => {
+  console.error('Failed to start server:', error);
+  process.exit(1);
+});
